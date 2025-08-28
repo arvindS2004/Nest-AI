@@ -6,8 +6,10 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProductDetails from './component/Products/ProductDetails';
 import LoginSignup from "./component/Authentication/LoginSignup";
 import UserData from './more/UserData';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { loadUser } from './actions/userAction';
+import { loadCartFromDatabase } from './actions/CartAction'; // Add this import
+import { loadFavouritesFromDatabase } from './actions/FavouriteAction'; // Add this import
 import Store from "./store";
 import ProtectedRoute from './route/ProtectedRoute';
 import Profile from "./component/user/Profile";
@@ -46,18 +48,24 @@ import ForgotPassword from "../../frontend/src/component/user/ForgotPassword";
 import ResetPassword from "../../frontend/src/component/user/ResetPassword";
 import Notfound from "../../frontend/src/more/Notfound";
 
-function App() {
+import AdminLogin from './component/Authentication/AdminLogin ';
 
-  const {isAuthenticated,user} = useSelector((state) =>state.user);
+function App() {
+  const dispatch = useDispatch(); // Add dispatch hook
+  const {isAuthenticated, user, loading} = useSelector((state) => state.user);
 
   const [stripeApiKey, setStripeApiKey] = useState("");
 
   async function getStripeApiKey() {
-    const { data } = await axios.get("/api/v2/stripeapikey");
-
-    setStripeApiKey(data.stripeApiKey);
+    try {
+      const { data } = await axios.get("/api/v2/stripeapikey");
+      setStripeApiKey(data.stripeApiKey);
+    } catch (error) {
+      console.error("Error fetching Stripe API key:", error);
+    }
   }
 
+  // Load user on app start
   useEffect(() => {
     WebFont.load({
       google: {
@@ -66,10 +74,30 @@ function App() {
     });
     
     Store.dispatch(loadUser());
-    
     getStripeApiKey();
-
   }, []);
+
+  // Load cart and favourites when user authentication status changes
+  useEffect(() => {
+    if (isAuthenticated && user && !loading) {
+      // Small delay to ensure user data is fully loaded
+      setTimeout(() => {
+        dispatch(loadCartFromDatabase());
+        dispatch(loadFavouritesFromDatabase());
+      }, 100);
+    }
+  }, [isAuthenticated, user, loading, dispatch]);
+
+  // Optional: Clear cart and favourites from localStorage when user logs out
+  useEffect(() => {
+    if (!isAuthenticated && !loading) {
+      // Clear cart and favourites from localStorage when user logs out
+      localStorage.removeItem("cartItems");
+      localStorage.removeItem("favouriteItems");
+      localStorage.removeItem("shippingInfo");
+    }
+  }, [isAuthenticated, loading]);
+
   return (
      
      <Router>
@@ -84,6 +112,7 @@ function App() {
          <Route exact path="/" component={Home} />
          <Route exact path="/product/:id" component={ProductDetails} />
          <Route exact path="/login" component={LoginSignup} />
+         <Route exact path="/admin-login" component={AdminLogin} />
          <Route exact path="/about" component={About} />
          <Route exact path="/products" component={Products} />
          <Route exact path="/search" component={Search} />

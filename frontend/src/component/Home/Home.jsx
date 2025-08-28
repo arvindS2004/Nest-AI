@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
-import Carousel from "react-material-ui-carousel";
-import bg from "../../Assets/background.jpg";
-import bg2 from "../../Assets/background2.jpg";
+import slides from "../../Assets/data.js"; 
 import ProductCard from "../Products/ProductCard";
 import  {useDispatch, useSelector} from "react-redux"
 import { clearErrors, getProduct } from "../../actions/ProductActions";
@@ -13,12 +11,40 @@ import BottomTab from "../../more/BottomTab";
 import Loading from "../../more/Loader";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSwipeable } from 'react-swipeable';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const [currentSlide, setCurrentSlide] = useState(0);
   const { products,error,loading } = useSelector(
     (state) => state.products
   );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const goToNextSlide = () => {
+    setCurrentSlide(currentSlide === slides.length - 1 ? 0 : currentSlide + 1);
+  };
+
+  const goToPrevSlide = () => {
+    setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1);
+  };
+
+  const selectSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: goToNextSlide,
+    onSwipedRight: goToPrevSlide,
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true 
+  });
 
    useEffect(() => {
     if(error){ 
@@ -37,93 +63,50 @@ const Home = () => {
       <>
       <MetaData title="Home" />
       <Header />
-        {/* Carousel */}
-        <div className="banner">
-               <Carousel>
-                 <img src={bg} className="bgImg"/>
-                 <img src={bg2} className="bgImg"/>
-               </Carousel>
-             <div className="home__content">
-               <div style={{
-                 display:"flex",
-                 alignItems:"center",
-               }}>
-               <h2 style={{
-                 fontFamily: "Segoe Script",
-                 fontSize: "3em",
-                 fontWeight:"500"
-               }}>Buy 2 Get</h2>
-               <span style={{
-                 padding:"10px",
-                 backgroundColor:"#fff",
-                 margin:"0px 10px",
-                 textAlign:"center",
-                 width:"150px",
-                 height:"40px",
-                 color: "#26c",
-                 fontFamily: "Segoe Script",
-                 fontSize: "2.4em",
-                 display:"flex",
-                 justifyContent:"center",
-                 lineHeight:".7",
-                 alignItems:"center"
-               }}>1 Free</span>
-               </div>
-               <div>
-                 <h2 style={{
-                   fontSize:"4.5em",
-                   fontFamily:"Poppins,sans-serif",
-                   color:"#fff",
-                 }}>Fashionable</h2>
-               </div>
-               <div>
-                 <h2 style={{
-                   fontSize:"4.5em",
-                   fontWeight:"400",
-                   fontFamily:"Poppins,sans-serif",
-                   color:"#fff",
-                   lineHeight:".7"
-                 }}>Collection</h2>
-               </div>
-               <div>
-                 <h2
-                 style={{
-                   fontWeight:"400",
-                   fontFamily:"Poppins,sans-serif",
-                   color:"#fff",
-                   fontSize:"1em",
-                   paddingTop:"10px"
-                 }}
-                 >
-                 Get Free Shipping on all orders over $99.00
-                 </h2>
-               </div>
-               <div>
-                 <a href="#container">
-                 <button type="submit" style={{
-                   width:"135px",
-                   height:"50px",
-                   border:"none",
-                   background:"#3BB77E",
-                   margin:"10px 0",
-                   fontSize:"1.2vmax",
-                   color:"#fff",
-                   cursor:"pointer"
-                 }}
-                 className="Home__button"
-                 >SHOP NOW</button>
-                 </a>
-               </div>
-             </div>
-         </div>
- 
+        
+        <div {...swipeHandlers} className="banner">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`slide ${index === currentSlide ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${slide.img})` }}
+            >
+         <div className="home__content">
+  <div className="home__contentBox">
+    <h2 className="home__title">{slide.text}</h2>
+    <p className="home__sub">Discover, Decide and Get the Best Recommendations</p>
+    <a href="#container">
+      <button className="Home__button">SHOP NOW</button>
+    </a>
+  </div>
+</div>
+
+
+                
+              </div>
+          ))}
+
+          <button className="prev" onClick={goToPrevSlide}>←</button>
+          <button className="next" onClick={goToNextSlide}>→</button>
+
+          <div className="dots">
+            {slides.map((_, index) => (
+              <span
+                key={index}
+                className={`dot ${index === currentSlide ? 'active' : ''}`}
+                onClick={() => selectSlide(index)}
+              ></span>
+            ))}
+          </div>
+        </div>
  
       <h2 className="homeHeading">Featured Products</h2>
       <div className="container" id="container">
-        {products && products.map((product) =>(
+        {products && products.slice(0, 8).map((product) =>(
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
+       <h2 className="homeHeading">AI Recommendations</h2>
       <ToastContainer 
         position="bottom-center"
         autoClose={5000}

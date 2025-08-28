@@ -89,7 +89,7 @@ const MoreOption = ({ history }) => {
                     fontSize: "14px",
                   }}
                 >
-                  view your profile
+                  View your profile
                 </span>
               </div>
             </div>
@@ -116,7 +116,7 @@ const MoreOption = ({ history }) => {
                 color: "#000",
               }}
             >
-              Visit Shop
+              Products
             </span>
           </div>
         </Link>
@@ -224,55 +224,9 @@ const MoreOption = ({ history }) => {
           </Link>
         )}
 
-        <Link to="/commingsoon">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "7px 0",
-            }}
-          >
-            <Creator
-              style={{
-                fontSize: "30px",
-                color: "#000",
-                marginRight: "10px",
-              }}
-            />
-            <span
-              style={{
-                color: "#000",
-              }}
-            >
-              Create Own Shop
-            </span>
-          </div>
-        </Link>
+        
 
-        <Link to="/commingsoon">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "7px 0",
-            }}
-          >
-            <ForumIcon
-              style={{
-                fontSize: "30px",
-                color: "#000",
-                marginRight: "10px",
-              }}
-            />
-            <span
-              style={{
-                color: "#000",
-              }}
-            >
-              Live chat support
-            </span>
-          </div>
-        </Link>
+        
         {isAuthenticated === false ? (
           ""
         ) : (
@@ -403,35 +357,12 @@ const MoreOption = ({ history }) => {
                 color: "#000",
               }}
             >
-              User Rules
+              AI recommendations
             </span>
           </div>
         </Link>
 
-        <Link to="/support">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "7px 0",
-            }}
-          >
-            <Support
-              style={{
-                fontSize: "30px",
-                color: "#000",
-                marginRight: "10px",
-              }}
-            />
-            <span
-              style={{
-                color: "#000",
-              }}
-            >
-              Report us
-            </span>
-          </div>
-        </Link>
+        
 
         {isAuthenticated === false ? (
           ""

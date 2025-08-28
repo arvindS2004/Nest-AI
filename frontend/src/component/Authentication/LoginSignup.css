@@ -6,7 +6,7 @@
     justify-content: flex-end;
     align-items: center;
     background-color: #fff;
-    background-image: url(https://image.freepik.com/free-vector/online-wishes-list-concept-illustration_114360-3900.jpg);
+    background-image: url(https://i.pinimg.com/736x/b5/a9/78/b5a9786bab9f1536f9a1e0b6e8d8c594.jpg);
     background-repeat: no-repeat;
     background-position: left;
     background-position-x: 10%;
@@ -15,6 +15,184 @@
     top: 0%;
     left: 0;
   }
+
+
+
+
+  /* Go Back Button Styles */
+.goBackButton {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.goBackButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.goBackButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.goBackButton svg {
+  font-size: 18px;
+}
+
+.goBackText {
+  font-family: inherit;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+  .goBackButton {
+    top: 15px;
+    left: 15px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .goBackButton svg {
+    font-size: 16px;
+  }
+}
+
+/* Extra small screens */
+@media screen and (max-width: 480px) {
+  .goBackButton {
+    top: 10px;
+    left: 10px;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+  
+  .goBackButton svg {
+    font-size: 14px;
+  }
+  
+  .goBackText {
+    display: none; /* Hide text on very small screens, show only icon */
+  }
+}
+
+/* High DPI screens */
+@media screen and (min-resolution: 192dpi) {
+  .goBackButton {
+    border-width: 0.5px;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .goBackButton {
+    background: rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .goBackButton:hover {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Light theme adjustments (if your container has light background) */
+.LoginSignUpContainer.light-theme .goBackButton {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333333;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.LoginSignUpContainer.light-theme .goBackButton:hover {
+  background: rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+
+
+  .defaultAvatarPicker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  padding: 1rem 1.5rem;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  z-index: 1001;
+
+  display: flex;
+  overflow-x: auto;
+  gap: 1.2rem;
+  justify-content: flex-start;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.defaultAvatarPicker::-webkit-scrollbar {
+  height: 0;
+}
+
+.defaultAvatarOption {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease-in-out;
+}
+
+.defaultAvatarOption:hover {
+  transform: scale(1.15);
+  border-color: #7B02EA;
+}
+
+.avatarPickerOverlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+@media screen and (max-width: 600px) {
+  .defaultAvatarPicker {
+    width: 90%;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .defaultAvatarOption {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+
+  
   
   .LoginSignUpBox {
     border: 2px solid #0000001a;

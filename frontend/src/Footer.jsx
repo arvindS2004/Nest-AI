@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div className="Footer flex space__around pz__15" style={{"borderTop":".3px solid rgba(21,21,21,0.5)"}}>
-      {/* Footer 1st part */}
+   
       <div className="footer1st">
         <img
           src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/logo.svg"
@@ -23,7 +23,7 @@ const Footer = () => {
             <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
           </svg>
           <strong>Address:</strong>
-          <h6>7400 Jashore Sadar,Bangladesh</h6>
+          <h6>Mumbai, Maharstra</h6>
         </div>
 
         <div className="location flex py__10">
@@ -53,65 +53,41 @@ const Footer = () => {
             <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5z" />
           </svg>
           <strong>Call us:</strong>
-          <h6>+8801785830142</h6>
+          <h6>+91 9911911911</h6>
         </div>
 
-        <div className="location flex py__10">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            fill="currentColor"
-            class="bi bi-geo-alt icon__color"
-            viewBox="0 0 16 16"
-          >
-            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-          </svg>
-          <strong>Time:</strong>
-          <h6>10:00 Am - 10:00 Pm (everyday)</h6>
-        </div>
+        
 
-        <div className="app">
-            <h1>Install App</h1>
-            <h6>From App Store or Google Play</h6>
-            <div className="App__Image flex pointer">
-            <Link to="/creator"><img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/app-store.jpg" style={{"width":"150px","margin":"10px"}} /></Link>
-            <Link to="/creator"><img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/google-play.jpg" style={{"width":"150px","margin":"10px"}} /></Link>
-            </div>
-        </div>
+       
       </div>
-      {/* Footer 2nd part */}
+      
       <div className="mobile">
         <div className="footer__2nd__part">
              <h5>Account</h5>
              <Link to="/login"><h3>Log In</h3></Link>
              <Link to="/login"><h3>Sign In</h3></Link>
-             <Link to="/login"><h3>Registration</h3></Link>
              <Link to="/password/forgot"><h3>Forgot Password</h3></Link>
         </div>
-        {/* Footer 3rd part */}
-        <div className="footer__2nd__part">
+        
+        {/* <div className="footer__2nd__part">
              <h5>Follow us</h5>
              <Link to="/facebook.com"><h3>Facebook</h3></Link>
              <Link to="/youtube.com"><h3>Youtube</h3></Link>
              <Link to="/instagram.com"><h3>Instagram</h3></Link>
-        </div>
-      {/* Footer 4th part */}
+        </div> */}
+        
        <div className="footer__3rd__part">
-            <h5>Buiseness</h5>
-             <Link to="/creator"><h3>Create A Seller Account</h3></Link>
-             <Link to="/creator"><h3>Seller Rules</h3></Link>
-             <Link to="/Products"><h3>View Shop</h3></Link>
+            <h5>Service</h5>
+             <Link to="/creator"><h3>Recommendation</h3></Link>
+             <Link to="/Products"><h3>Profile</h3></Link>
              <Link to="/support"><h3>Report us</h3></Link>
        </div>
-      {/* Footer 5th part */}
+       
       <div className="footer__4th__part">
       <h5>Rules</h5>
       <Link to="/faq"><h3>FAQ</h3></Link>
       <Link to="/contact"><h3>contact us</h3></Link>
       <Link to="/about"><h3>About us</h3></Link>
-      <Link to="/creator"><h3>Live Chat</h3></Link>
         </div>
         </div>
     </div>

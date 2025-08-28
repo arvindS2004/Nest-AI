@@ -7,7 +7,7 @@ import {
   ALL_PRODUCT_REQUEST,
   ALL_PRODUCT_SUCCESS,
   CLEAR_ERRORS,
-  DELETE_PRODUCT_FAIL,
+  DELETE_PRODUCT_FAIL, 
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
   DELETE_REVIEW_FAIL,
@@ -39,9 +39,10 @@ export const getProduct= (keyword="",currentPage=1,category) => async (dispatch)
 
      let link = `/api/v2/products?keyword=${keyword}&page=${currentPage}`;
       
-     if(category){
-      link = `/api/v2/products?keyword=${keyword}&page=${currentPage}&category=${category}`;
-     }
+    if (category) {
+  link = `/api/v2/products?keyword=${keyword}&page=${currentPage}&category=${encodeURIComponent(category)}`;
+}
+
       const {data} = await axios.get(link);
 
       dispatch({

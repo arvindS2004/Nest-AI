@@ -1,7 +1,10 @@
-import { React, useEffect, useRef, useState } from "react";
+import { React, useEffect, useRef, useState} from "react";
+import { useHistory } from "react-router-dom";
+
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import FaceIcon from "@material-ui/icons/Face";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Link } from "react-router-dom";
 import "./LoginSignup.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +13,14 @@ import { clearErrors, login, register } from "../../actions/userAction";
 import MetaData from "../../more/Metadata";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import avatar1 from "./avatars/avatar1.png";
+import avatar2 from "./avatars/avatar2.png";
+import avatar3 from "./avatars/avatar3.png";
+import avatar4 from "./avatars/avatar4.png";
+import avatar5 from "./avatars/avatar5.png";
+import avatar6 from "./avatars/avatar6.png";
+
+const defaultAvatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
 
 const LoginSignup = ({ history, location }) => {
   const dispatch = useDispatch();
@@ -19,6 +30,7 @@ const LoginSignup = ({ history, location }) => {
   );
 
   const [loginEmail, setLoginEmail] = useState("");
+  const [showDefaultAvatars, setShowDefaultAvatars] = useState(false);
   const [loginPassword, setLoginPassword] = useState("");
 
   const [user, setUser] = useState({
@@ -35,6 +47,15 @@ const LoginSignup = ({ history, location }) => {
 
   const [avatar, setAvatar] = useState("/profile.png");
   const [avatarPreview, setAvatarPreview] = useState("/profile.png");
+  const [isDefaultAvatar, setIsDefaultAvatar] = useState(false);
+
+  const handleGoBack = () => {
+    if (history.length > 1) {
+      history.goBack();
+    } else {
+      history.push('/'); 
+    }
+  };
 
   const loginSubmit = (e) => {
     e.preventDefault();
@@ -49,7 +70,17 @@ const LoginSignup = ({ history, location }) => {
     myForm.set("name", name);
     myForm.set("email", email);
     myForm.set("password", password);
-    myForm.set("avatar", avatar);
+    
+    if (isDefaultAvatar) {
+      
+      myForm.set("avatarUrl", avatar);
+      myForm.set("isDefaultAvatar", "true");
+    } else {
+      
+      myForm.set("avatar", avatar);
+      myForm.set("isDefaultAvatar", "false");
+    }
+    
     dispatch(register(myForm));
   };
 
@@ -61,6 +92,7 @@ const LoginSignup = ({ history, location }) => {
         if (reader.readyState === 2) {
           setAvatarPreview(reader.result);
           setAvatar(reader.result);
+          setIsDefaultAvatar(false); 
         }
       };
 
@@ -68,6 +100,15 @@ const LoginSignup = ({ history, location }) => {
     } else {
       setUser({ ...user, [e.target.name]: e.target.value });
     }
+  };
+
+  
+
+  const selectDefaultAvatar = (avatarUrl) => {
+    setAvatarPreview(avatarUrl);
+    setAvatar(avatarUrl);
+    setIsDefaultAvatar(true); 
+    setShowDefaultAvatars(false);
   };
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
@@ -81,7 +122,7 @@ const LoginSignup = ({ history, location }) => {
     if (isAuthenticated) {
       history.push(redirect);
     }
-  }, [dispatch, error, alert, history, isAuthenticated]);
+  }, [dispatch, error, history, isAuthenticated, redirect]);
 
   const switchTabs = (e, tab) => {
     if (tab === "login") {
@@ -99,6 +140,9 @@ const LoginSignup = ({ history, location }) => {
       loginTab.current.classList.add("shiftToLeft");
     }
   };
+
+  
+
   return (
     <>
       {loading ? (
@@ -107,6 +151,12 @@ const LoginSignup = ({ history, location }) => {
         <>
           <MetaData title="Login or Signup" />
           <div className="LoginSignUpContainer">
+           
+            <button className="goBackButton" onClick={handleGoBack}>
+              <ArrowBackIcon />
+              <span className="goBackText">Back</span>
+            </button>
+
             <div className="LoginSignUpBox">
               <div>
                 <div className="login_signUp_toggle">
@@ -115,33 +165,36 @@ const LoginSignup = ({ history, location }) => {
                 </div>
                 <button ref={switcherTab}></button>
               </div>
-              <form className="loginForm" ref={loginTab} onSubmit={loginSubmit}>
-                <div className="loginEmail">
-                  <MailOutlineIcon />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    required
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
-                  />
-                </div>
-                <div className="loginPassword">
-                  <LockOpenIcon />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    required
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                  />
-                </div>
-                <Link to="/password/forgot">Forgot Password ?</Link>
-                <input type="submit" value="Login" className="loginBtn" />
-                <Link to="/">
-                  <span>Login as a guest ?</span>
-                </Link>
-              </form>
+              
+             <form className="loginForm" ref={loginTab} onSubmit={loginSubmit}>
+  <div className="loginEmail">
+    <MailOutlineIcon />
+    <input
+      type="email"
+      placeholder="Email"
+      required
+      value={loginEmail}
+      onChange={(e) => setLoginEmail(e.target.value)}
+    />
+  </div>
+  <div className="loginPassword">
+    <LockOpenIcon />
+    <input
+      type="password"
+      placeholder="Password"
+      required
+      value={loginPassword}
+      onChange={(e) => setLoginPassword(e.target.value)}
+    />
+  </div>
+  <Link to="/password/forgot">Forgot Password ?</Link>
+  <input type="submit" value="Login" className="loginBtn" />
+  <Link to="/">
+    <span>Login as a guest ?</span>
+  </Link>
+
+</form>
+
 
               <form
                 className="signUpForm"
@@ -191,12 +244,39 @@ const LoginSignup = ({ history, location }) => {
                     accept="image/*"
                     onChange={registerDataChange}
                   />
+                  <button
+                    type="button"
+                    className="chooseDefaultBtn"
+                    onClick={() => setShowDefaultAvatars(!showDefaultAvatars)}
+                  >
+                    Choose Profile Pic
+                  </button>
                 </div>
+                
+                {showDefaultAvatars && (
+                  <>
+                    <div
+                      className="avatarPickerOverlay"
+                      onClick={() => setShowDefaultAvatars(false)}
+                    />
+                    <div className="defaultAvatarPicker">
+                      {defaultAvatars.map((url, index) => (
+                        <img
+                          key={index}
+                          src={url}
+                          alt={`Default Avatar ${index + 1}`}
+                          className="defaultAvatarOption"
+                          onClick={() => selectDefaultAvatar(url)}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+
                 <input type="submit" value="Register" className="signUpBtn" />
               </form>
             </div>
           </div>
-          <div></div>
           <ToastContainer
             position="bottom-center"
             autoClose={5000}

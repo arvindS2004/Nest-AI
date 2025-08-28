@@ -4,7 +4,6 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const Features = require("../utils/Features");
 const cloudinary = require("cloudinary");
 
-// create Product --Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   let images = [];
 

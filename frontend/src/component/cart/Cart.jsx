@@ -4,6 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { addItemsToCart, removeItemsFromCart } from "../../actions/CartAction";
 import { Typography } from "@material-ui/core";
 import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+import PaymentIcon from "@material-ui/icons/Payment";
 import { Link } from "react-router-dom";
 import CartItemCard from "./CartItemCard.js";
 import BottomTab from "../../more/BottomTab";
@@ -12,22 +17,33 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Cart = ({ history }) => {
   const dispatch = useDispatch();
-
   const { cartItems } = useSelector((state) => state.cart);
 
-  let Price = cartItems.reduce(
-    (acc, item) => acc + item.quantity * item.price,
-    0
-  );
-
-  let totalPrice = Price;
+  // Calculate totals
+  const subtotal = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const tax = subtotal * 0.18; // 18% tax
+  const shipping = subtotal > 1000 ? 0 : 100; // Free shipping over $1000
+  const totalPrice = subtotal + tax + shipping;
 
   const increaseQuantity = (id, quantity, stock) => {
     const newQty = quantity + 1;
     if (stock <= quantity) {
-      return toast.error("Product Stock Limited");
+      return toast.error("Product Stock Limited", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
     dispatch(addItemsToCart(id, newQty));
+    toast.success("Quantity increased", {
+      position: "bottom-center",
+      autoClose: 2000,
+      hideProgressBar: true,
+    });
   };
 
   const decreaseQuantity = (id, quantity) => {
@@ -36,91 +52,198 @@ const Cart = ({ history }) => {
       return;
     }
     dispatch(addItemsToCart(id, newQty));
+    toast.info("Quantity decreased", {
+      position: "bottom-center",
+      autoClose: 2000,
+      hideProgressBar: true,
+    });
   };
 
   const deleteCartItems = (id) => {
     dispatch(removeItemsFromCart(id));
+    toast.error("Item removed from cart", {
+      position: "bottom-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+    });
   };
 
   const checkoutHandler = () => {
     history.push("/login?redirect=shipping");
   };
 
+  const handleBackButton = () => {
+    history.goBack();
+  };
+
   return (
     <>
-      {cartItems.length === 0 ? (
-        <div className="emptyCart">
-          <RemoveShoppingCartIcon />
-          <Typography>No Items In Cart</Typography>
-          <Link to="/products">View Products</Link>
-          <BottomTab />
+      <div className="cart-wrapper">
+        {/* Header Section */}
+        <div className="cart-header-section">
+          <button className="back-button" onClick={handleBackButton} aria-label="Go back">
+            <ArrowBackIcon className="back-icon" />
+            <span className="back-text">Back</span>
+          </button>
+          
+          <div className="page-title">
+            <ShoppingCartIcon className="title-icon" />
+            <h1>Shopping Cart</h1>
+            {cartItems.length > 0 && (
+              <span className="items-count">
+                {totalItems} {totalItems === 1 ? 'item' : 'items'}
+              </span>
+            )}
+          </div>
         </div>
-      ) : (
-        <>
-          <div className="cartPage">
-            <div className="cartHeader">
-              <p>Product</p>
-              <p>Quantity</p>
-              <p>Subtotal</p>
+
+        {cartItems.length === 0 ? (
+          <div className="empty-cart">
+            <div className="empty-content">
+              <div className="empty-icon">
+                <RemoveShoppingCartIcon />
+              </div>
+              <h2 className="empty-title">Your Cart is Empty</h2>
+              <p className="empty-description">
+                Looks like you haven't added anything to your cart yet. Start shopping to fill it up!
+              </p>
+              <Link to="/products" className="browse-products-btn">
+                Browse Products
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="cart-content">
+            {/* Desktop Table Header */}
+            <div className="cart-table-header">
+              <div className="header-cell product-header">Product</div>
+              <div className="header-cell quantity-header">Quantity</div>
+              <div className="header-cell subtotal-header">Subtotal</div>
             </div>
 
-            {cartItems &&
-              cartItems.map((item) => (
-                <div className="cartContainer" key={item.product}>
-                  <CartItemCard item={item} deleteCartItems={deleteCartItems} />
-                  <div className="cartInput">
-                    <button
-                      onClick={() =>
-                        decreaseQuantity(item.product, item.quantity)
-                      }
-                    >
-                      -
-                    </button>
-                    <input type="number" readOnly value={item.quantity} />
-                    <button
-                      onClick={() =>
-                        increaseQuantity(
-                          item.product,
-                          item.quantity,
-                          item.stock
-                        )
-                      }
-                    >
-                      +
-                    </button>
+            {/* Cart Items List */}
+            <div className="cart-items-list">
+              {cartItems.map((item, index) => (
+                <div 
+                  className="cart-item-wrapper" 
+                  key={item.product}
+                  style={{'--item-index': index}}
+                >
+                  <div className="cart-item-container">
+                    {/* Product Section */}
+                    <div className="cart-product-section">
+                      <CartItemCard item={item} deleteCartItems={deleteCartItems} />
+                    </div>
+
+                    <div className="cart-quantity-section">
+                      <div className="quantity-controls">
+                        <button
+                          className="quantity-btn decrease"
+                          onClick={() => decreaseQuantity(item.product, item.quantity)}
+                          disabled={item.quantity <= 1}
+                          aria-label="Decrease quantity"
+                        >
+                          <RemoveIcon />
+                        </button>
+                        <input 
+                          type="number" 
+                          readOnly 
+                          value={item.quantity} 
+                          className="quantity-input"
+                          aria-label={`Quantity: ${item.quantity}`}
+                        />
+                        <button
+                          className="quantity-btn increase"
+                          onClick={() => increaseQuantity(item.product, item.quantity, item.stock)}
+                          disabled={item.stock <= item.quantity}
+                          aria-label="Increase quantity"
+                        >
+                          <AddIcon />
+                        </button>
+                      </div>
+                      <span className="stock-info">
+                        {item.stock <= item.quantity ? (
+                          <span className="stock-limited">Stock Limited</span>
+                        ) : item.stock <= 5 ? (
+                          <span className="stock-low">Only {item.stock} left</span>
+                        ) : (
+                          <span className="stock-available">In Stock</span>
+                        )}
+                      </span>
+                    </div>
+
+                    <div className="cart-subtotal-section">
+                      <span className="subtotal-amount">
+                        ₹{(item.price * item.quantity).toLocaleString()}
+                      </span>
+                      <span className="unit-price">
+                        ₹{item.price} each
+                      </span>
+                    </div>
                   </div>
-                  <p className="cartSubtotal">{`$${
-                    item.price * item.quantity
-                  }`}</p>
                 </div>
               ))}
+            </div>
 
-            <div className="cartGrossProfit">
-              <div></div>
-              <div className="cartGrossProfitBox">
-                <p>Price Total</p>
-                <p>$ {totalPrice}</p>
-              </div>
-              <div></div>
-              <div className="checkOutBtn">
-                <button onClick={checkoutHandler}>Check Out</button>
+            {/* Cart Summary */}
+            <div className="cart-summary">
+              <div className="summary-content">
+                <div className="summary-section">
+                  <h3 className="summary-title">Order Summary</h3>
+                  
+                  <div className="summary-row">
+                    <span className="summary-label">Subtotal ({totalItems} items):</span>
+                    <span className="summary-value">₹{subtotal.toLocaleString()}</span>
+                  </div>
+                  
+                  <div className="summary-row">
+                    <span className="summary-label">Tax (18%):</span>
+                    <span className="summary-value">₹{tax.toFixed(0)}</span>
+                  </div>
+                  
+                  <div className="summary-row">
+                    <span className="summary-label">Shipping:</span>
+                    <span className="summary-value">
+                      {shipping === 0 ? (
+                        <span className="free-shipping">FREE</span>
+                      ) : (
+                        `₹${shipping}`
+                      )}
+                    </span>
+                  </div>
+                  
+                 
+                  
+                  
+                  <div className="summary-row total-row">
+                    <span className="summary-label total-label">Total:</span>
+                    <span className="summary-value total-value">₹{totalPrice.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="checkout-section">
+                  <button 
+                    className="checkout-btn"
+                    onClick={checkoutHandler}
+                    aria-label="Proceed to checkout"
+                  >
+                    <PaymentIcon className="checkout-icon" />
+                    <span className="checkout-text">Proceed to Checkout</span>
+                  </button>
+                  
+                  <Link to="/products" className="continue-shopping-btn">
+                    Continue Shopping
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-          <ToastContainer
-            position="bottom-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-          <BottomTab />
-        </>
-      )}
+        )}
+        
+        <BottomTab />
+      </div>
+
+      
     </>
   );
 };

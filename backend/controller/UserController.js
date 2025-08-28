@@ -9,7 +9,7 @@ const cloudinary = require("cloudinary");
 // Register user
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
   try {
-    const { name, email, password, avatar } = req.body;
+    const { name, email, password, avatar, isDefaultAvatar, avatarUrl } = req.body;
 
     let user = await User.findOne({ email });
     if (user) {
@@ -18,18 +18,45 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
         .json({ success: false, message: "User already exists" });
     }
 
-    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-      folder: "avatars",
-    });
+    let avatarData = {
+      public_id: "default_avatar",
+      url: "/profile.png",
+    };
+
+    // Check if it's a default avatar
+    if (isDefaultAvatar === "true" && avatarUrl) {
+      // For default avatars, just use the provided URL
+      avatarData = {
+        public_id: "default_avatar",
+        url: avatarUrl,
+      };
+    } else if (avatar && avatar !== "/profile.png" && avatar.startsWith("data:image")) {
+      // For uploaded files, handle cloudinary upload
+      try {
+        const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+          folder: "avatars",
+          width: 150,
+          crop: "scale",
+        });
+
+        avatarData = {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        };
+      } catch (uploadError) {
+        return next(new ErrorHandler("Avatar upload failed: " + uploadError.message, 400));
+      }
+    }
 
     user = await User.create({
       name,
       email,
       password,
-      avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
+      avatar: avatarData,
     });
     
-    sendToken(user, 201, res);
+    sendToken(user, 201, res, user.role); 
+    
 
   } catch (error) {
     res.status(500).json({
@@ -50,19 +77,17 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
-    return next(
-      new ErrorHandler("User is not find with this email & password", 401)
-    );
+    return next(new ErrorHandler("User not found with this email", 401));
   }
+
   const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
-    return next(
-      new ErrorHandler("User is not find with this email & password", 401)
-    );
+    return next(new ErrorHandler("Incorrect password", 401));
   }
 
-  sendToken(user, 201, res);
+  // Send token along with role
+  sendToken(user, 200, res);
 });
 
 //  Log out user
@@ -87,7 +112,6 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   }
 
   // Get ResetPassword Token
-
   const resetToken = user.getResetToken();
 
   await user.save({
@@ -126,7 +150,6 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 // Reset Password
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   // Create Token hash
-
   const resetPasswordToken = crypto
     .createHash("sha256")
     .update(req.params.token)
@@ -150,7 +173,6 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   }
 
   user.password = req.body.password;
-
   user.resetPasswordToken = undefined;
   user.resetPasswordTime = undefined;
 
@@ -171,126 +193,144 @@ exports.userDetails = catchAsyncErrors(async (req, res, next) => {
 
 // Update User Password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
-   
-    const user = await User.findById(req.user.id).select("+password");
+  const user = await User.findById(req.user.id).select("+password");
 
-    const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
+  const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
 
-    if (!isPasswordMatched) {
-      return next(
-        new ErrorHandler("Old Password is incorrect", 400)
-      );
-    };
+  if (!isPasswordMatched) {
+    return next(
+      new ErrorHandler("Old Password is incorrect", 400)
+    );
+  }
 
-    if(req.body.newPassword  !== req.body.confirmPassword){
-        return next(
-            new ErrorHandler("Password not matched with each other", 400)
-          );
-    }
+  if(req.body.newPassword !== req.body.confirmPassword){
+    return next(
+      new ErrorHandler("Password not matched with each other", 400)
+    );
+  }
 
-    user.password = req.body.newPassword;
+  user.password = req.body.newPassword;
 
-    await user.save();
+  await user.save();
 
-    sendToken(user,200,res);
+  sendToken(user, 200, res);
 });
 
 // Update User Profile
-exports.updateProfile = catchAsyncErrors(async(req,res,next) =>{
-    const newUserData = {
-        name: req.body.name,
-        email: req.body.email,
-    };
+exports.updateProfile = catchAsyncErrors(async(req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
 
-   if (req.body.avatar !== "") {
+  // Handle avatar update
+  if (req.body.avatar !== "") {
     const user = await User.findById(req.user.id);
+    
+    // Check if it's a default avatar or uploaded file
+    if (req.body.isDefaultAvatar === "true" && req.body.avatarUrl) {
+      // For default avatars, just update with the new URL
+      newUserData.avatar = {
+        public_id: "default_avatar",
+        url: req.body.avatarUrl,
+      };
+    } else if (req.body.avatar.startsWith("data:image")) {
+      // For uploaded files, handle cloudinary upload
+      try {
+        // Delete old avatar if it's not a default one
+        if (user.avatar.public_id !== "default_avatar") {
+          await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+        }
 
-    const imageId = user.avatar.public_id;
+        const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+          folder: "avatars",
+          width: 150,
+          crop: "scale",
+        });
 
-    await cloudinary.v2.uploader.destroy(imageId);
-
-    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-      folder: "avatars",
-      width: 150,
-      crop: "scale",
-    });
-    newUserData.avatar = {
-      public_id: myCloud.public_id,
-      url: myCloud.secure_url,
-    };
+        newUserData.avatar = {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        };
+      } catch (uploadError) {
+        return next(new ErrorHandler("Avatar upload failed: " + uploadError.message, 400));
+      }
+    }
   }
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
-    runValidator: true,
+    runValidators: true,
     useFindAndModify: false,
   });
 
   res.status(200).json({
     success: true,
+    user,
   });
 });
 
 // Get All users ---Admin
-exports.getAllUsers = catchAsyncErrors(async (req,res,next) =>{
-    const users = await User.find();
+exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find();
 
-    res.status(200).json({
-        success: true,
-        users,
-    });
+  res.status(200).json({
+    success: true,
+    users,
+  });
 });
 
 // Get Single User Details ---Admin
-exports.getSingleUser = catchAsyncErrors(async (req,res,next) =>{
-    const user = await User.findById(req.params.id);
-   
-    if(!user){
-        return next(new ErrorHandler("User is not found with this id",400));
-    }
+exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+ 
+  if(!user){
+    return next(new ErrorHandler("User is not found with this id", 400));
+  }
 
-    res.status(200).json({
-        success: true,
-        user,
-    });
+  res.status(200).json({
+    success: true,
+    user,
+  });
 });
 
 // Change user Role --Admin
-exports.updateUserRole = catchAsyncErrors(async(req,res,next) =>{
-    const newUserData = {
-        name: req.body.name,
-        email: req.body.email,
-        role: req.body.role,
-    };
-    const user = await User.findByIdAndUpdate(req.params.id,newUserData, {
-        new: true,
-        runValidators: true,
-        useFindAndModify: false,
-    });
+exports.updateUserRole = catchAsyncErrors(async(req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+  
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
 
-    res.status(200).json({
-        success: true,
-        user
-    })
+  res.status(200).json({
+    success: true,
+    user
+  });
 });
 
 // Delete User ---Admin
-exports.deleteUser = catchAsyncErrors(async(req,res,next) =>{
-  
-   const user = await User.findById(req.params.id);
+exports.deleteUser = catchAsyncErrors(async(req, res, next) => {
+  const user = await User.findById(req.params.id);
 
-   const imageId = user.avatar.public_id;
+  if(!user){
+    return next(new ErrorHandler("User is not found with this id", 400));
+  }
 
-   await cloudinary.v2.uploader.destroy(imageId);
+  // Only delete from cloudinary if it's not a default avatar
+  if (user.avatar.public_id !== "default_avatar") {
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+  }
 
-    if(!user){
-        return next(new ErrorHandler("User is not found with this id",400));
-    }
+  await user.remove();
 
-    await user.remove();
-
-    res.status(200).json({
-        success: true,
-        message:"User deleted successfully"
-    })
+  res.status(200).json({
+    success: true,
+    message: "User deleted successfully"
+  });
 });

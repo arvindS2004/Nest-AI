@@ -25,10 +25,9 @@ const About = () => {
       }}
     >
       <div className="about__page">
-        {/* 1st verse */}
-        <div className="row flex">
+        <div className="row flex"> 
           <div className="col__2">
-            <img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/page/about-1.png" />
+            <img src="https://i.pinimg.com/1200x/59/b2/35/59b2351eaff7cd5d926a873873eb40f2.jpg" />
           </div>
           <div className="col__2">
             <div className="meta">
@@ -42,26 +41,25 @@ const About = () => {
                 Welcome to Nest
               </span>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                irure dolor in reprehenderit in voluptate id est laborum.
+                The Future of Grocery Shopping
+At NEST, we believe grocery shopping should be effortless, personalized, and intelligent. Founded with the vision of transforming how families stock their kitchens, NEST combines the convenience of online shopping with cutting-edge AI technology to create a truly revolutionary grocery experience.
               </p>
+               <span
+                style={{
+                  fontSize: "40px",
+                  fontWeight: "700",
+                  lineHeight: "1.2",
+                }}
+              >
+                Our Story
+              </span>
               <p>
-                lus ferri velit sanctus cu, sed at soleat accusata. Dictas
-                prompta et Ut placerat legendos interpre.Donec vitae sapien ut
-                libero venenatis faucibus. Nullam quis ante Etiam sit amet
-                orci eget. Quis commodo odio aenean sed adipiscing. Turpis
-                massa tincidunt dui ut ornare lectus. Auctor elit sed
-                vulputate mi sit amet. Commodo consequat. Duis aute irure
-                dolor in reprehenderit in voluptate id est laborum.
+                NEST was born from a simple observation: grocery shopping shouldn't be a chore filled with forgotten items, impulse purchases, and endless aisles. Our founders, passionate technologists and busy parents themselves, envisioned a world where your grocery store knows your family's needs better than you do – and delivers exactly what you need, when you need it.
               </p>
             </div>
           </div>
         </div>
-
-        {/* 2nd verse */}
+<br />
         <div className="second">
           <div className="heading">
             <h2>What We Provide?</h2>
@@ -76,31 +74,13 @@ const About = () => {
                 <div className="flex align__items__center justify__content__center image">
               <img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/icons/icon-1.svg" />
                 </div>
-              <span>Best Prices & Offers</span>
+              <span>AI-Powered Intelligence</span>
               <p>
-                There are many variations of passages of Lorem Ipsum
-                available, but the majority have suffered alteration in some
-                form
+                Our advanced recommendation system learns from your shopping patterns, dietary preferences, seasonal needs, and even local trends to suggest products you'll love before you even know you need them. 
               </p>
               </div>
             </div>
-            <div className="col__3">
-                <div style={{
-                    padding:"10px",
-                    border:"1px solid rgb(0 0 0 / 14%)",
-                    minHeight:"230px"
-                }}>
-                <div className="flex align__items__center justify__content__center image">
-              <img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/icons/icon-2.svg" />
-                </div>
-              <span>Best For Trust & Quality</span>
-              <p>
-                There are many variations of passages of Lorem Ipsum
-                available, but the majority have suffered alteration in some
-                form
-              </p>
-              </div>
-            </div>
+            
             <div className="col__3">
                 <div style={{
                     padding:"15px",
@@ -110,11 +90,9 @@ const About = () => {
                 <div className="flex align__items__center justify__content__center image">
               <img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/icons/icon-3.svg" />
                 </div>
-              <span>Fast Delivery System</span>
+              <span>Your Personal Shopping Coach</span>
               <p>
-                There are many variations of passages of Lorem Ipsum
-                available, but the majority have suffered alteration in some
-                form
+                Meet NEST AI - your friendly digital nutritionist who provides personalized insights and gentle guidance. 
               </p>
               </div>
             </div>
@@ -129,32 +107,14 @@ const About = () => {
                 <div className="flex align__items__center justify__content__center image">
               <img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/icons/icon-4.svg" />
                 </div>
-              <span>Easy Returns Service</span>
+              <span>Building Your Perfect Neste</span>
               <p>
-                There are many variations of passages of Lorem Ipsum
-                available, but the majority have suffered alteration in some
-                form
+                Just like how birds carefully select the best materials for their nest, we help you curate the perfect selection of groceries for your home. 
               </p>
               </div>
             </div>
 
-            <div className="col__3">
-                <div style={{
-                    padding:"15px",
-                    border:"1px solid rgb(0 0 0 / 14%)",
-                    minHeight:"230px"
-                }}>
-                <div className="flex align__items__center justify__content__center image">
-              <img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/icons/icon-5.svg" />
-                </div>
-              <span>100% satisfication</span>
-              <p>
-                There are many variations of passages of Lorem Ipsum
-                available, but the majority have suffered alteration in some
-                form
-              </p>
-              </div>
-            </div>
+            
             
             <div className="col__3">
                 <div style={{
@@ -165,11 +125,9 @@ const About = () => {
                 <div className="flex align__items__center justify__content__center image">
               <img src="http://wp.alithemes.com/html/nest/demo/assets/imgs/theme/icons/icon-6.svg" />
                 </div>
-              <span>Great Daily Deal</span>
+              <span>Sustainable & Smart</span>
               <p>
-                There are many variations of passages of Lorem Ipsum
-                available, but the majority have suffered alteration in some
-                form
+                We're committed to reducing food waste through intelligent inventory management and helping our customers make environmentally conscious choices through our green product recommendations.
               </p>
               </div>
             </div>
