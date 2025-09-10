@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "./ProductCard.css";
 
-// Redux actions
 import { addItemsToCart } from "../../actions/CartAction";
 import {
   addFavouriteItemsToCart,
@@ -13,11 +12,8 @@ import {
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
-
-  // get current favourites from redux
   const { favouriteItems } = useSelector((state) => state.favourite);
 
-  // check if this product is already in favourites
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
@@ -25,11 +21,12 @@ const ProductCard = ({ product }) => {
     setIsFavorite(exists);
   }, [favouriteItems, product._id]);
 
-  // Calculate discount percentage if offer price exists
+  // convert values safely
+  const price = Number(product.price) || 0;
+  const offerPrice = Number(product.offerPrice) || 0;
+
   const discountPercentage =
-    product.offerPrice > 0
-      ? Math.round(((product.price - product.offerPrice) / product.price) * 100)
-      : 0;
+    offerPrice > 0 ? Math.round(((price - offerPrice) / price) * 100) : 0;
 
   // --- HANDLERS ---
   const handleFavoriteClick = (e) => {
@@ -37,11 +34,9 @@ const ProductCard = ({ product }) => {
     e.stopPropagation();
 
     if (isFavorite) {
-      // Remove from redux
       dispatch(deleteFavouriteItemsToCart(product._id));
       toast.info("Removed from Favourites");
     } else {
-      // Add to redux
       dispatch(addFavouriteItemsToCart(product._id, 1));
       toast.success("Product Added to Favourites");
     }
@@ -50,10 +45,9 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    // Check stock availability
+
     if (product.Stock > 0) {
-      dispatch(addItemsToCart(product._id, 1)); // default qty 1
+      dispatch(addItemsToCart(product._id, 1));
       toast.success("Product Added to Cart");
     } else {
       toast.error("Product stock limited");
@@ -100,51 +94,39 @@ const ProductCard = ({ product }) => {
 
         <div className="product-content">
           <h3 className="productName" title={product.name}>
-            {product.name} 
-             </h3>        
+            {product.name}
+          </h3>
 
-            <div className="price-container">
-            <div className="offerPriceBox">
-              {product.offerPrice > 0 ? (
-                <>
-                  <span className="discountPrice">
-                    ${product.offerPrice.toFixed(2)}
-                  </span>
-                  <span className="p__Price">₹{product.price.toFixed(2)}</span>
-                </>
-              ) : (
-                <span className="regularPrice">
-                  ₹{product.price.toFixed(2)}
-                </span>
-              )}
-            </div>
-          </div>    
-
-               
+          <div className="price-container">
+            
+                <span className="regularPrice">₹{price.toFixed(2)}</span>
+             
+          </div>
         </div>
-         <div className="card-actions">
-        <button
-          className={`add-to-cart-btn ${product.Stock < 1 ? "disabled" : ""}`}
-          onClick={handleAddToCart}
-          disabled={product.Stock < 1}
-          aria-label="Add to cart"
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
+
+        <div className="card-actions">
+          <button
+            className={`add-to-cart-btn ${product.Stock < 1 ? "disabled" : ""}`}
+            onClick={handleAddToCart}
+            disabled={product.Stock < 1}
+            aria-label="Add to cart"
           >
-            <circle cx="8" cy="21" r="1" />
-            <circle cx="19" cy="21" r="1" />
-            <path d="m2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-          </svg>
-          {product.Stock < 1 ? "Out of Stock" : "Add to Cart"}
-        </button>
-      </div>
-      </Link>     
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <circle cx="8" cy="21" r="1" />
+              <circle cx="19" cy="21" r="1" />
+              <path d="m2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+            </svg>
+            {product.Stock < 1 ? "Out of Stock" : "Add to Cart"}
+          </button>
+        </div>
+      </Link>
     </div>
   );
 };

@@ -91,7 +91,7 @@ const Header = () => {
                 <Link to="/creator" className="nav-link">Become A Seller</Link>
               </li> */}
               <li className="natem">
-                <Link to="/faq" className="nav-link">NEST - AI</Link>
+                <Link to="/nest-ai" className="nav-link">NEST - AI</Link>
               </li>
               <li className="natem">
                 <Link to="/contact" className="nav-link">Contact</Link>

@@ -8,6 +8,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Support from "@material-ui/icons/ReportProblem"
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import HeartIcon from "@material-ui/icons/FavoriteBorder";
 import HeartActiveIcon from "@material-ui/icons/Favorite";
 import HomeIcon from "@material-ui/icons/Home";
@@ -28,7 +29,7 @@ const UserData = ({ user }) => {
   const scroolEffect = useRef(null);
 
   window.addEventListener("scroll", () =>{
-    if(window.pageYOffset > 100){
+    if(window.pageYOffset > 1500){
         document.querySelector(".speedDial").classList.add("active");
     }
     else{
@@ -64,7 +65,7 @@ const UserData = ({ user }) => {
       func: favourite,
     },
     { icon: <PersonIcon />, name: "Profile", func: account },
-    { icon: <Support />, name: "Report us", func: report },
+    // { icon: <FeedbackIcon />, name: "Feedback", func: report },
     { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser },
   ];
 
@@ -143,7 +144,7 @@ const UserData = ({ user }) => {
             tooltipOpen={false}
           />
         ))}
-      </SpeedDial>
+      </SpeedDial> 
       <ToastContainer 
         position="bottom-center"
         autoClose={5000}

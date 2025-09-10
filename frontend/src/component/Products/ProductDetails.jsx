@@ -109,11 +109,11 @@ const ProductDetails = ({ match, history }) => {
         <>
           <MetaData title={`${product.name}`} />
           <Header />
-          
-          <div className="back-button-container">
+           
+          <div className="back-bc">
             <button 
               onClick={handleGoBack} 
-              className="back-button"
+              className="back-b"
               aria-label="Go back to previous page"
             >
               <svg 

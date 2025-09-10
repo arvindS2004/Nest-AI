@@ -22,7 +22,7 @@ import avatar6 from "./avatars/avatar6.png";
 
 const defaultAvatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
 
-const LoginSignup = ({ history, location }) => {
+const LoginSignup = ({ history, location }) => { 
   const dispatch = useDispatch();
 
   const { error, loading, isAuthenticated } = useSelector(
@@ -189,9 +189,7 @@ const LoginSignup = ({ history, location }) => {
   </div>
   <Link to="/password/forgot">Forgot Password ?</Link>
   <input type="submit" value="Login" className="loginBtn" />
-  <Link to="/">
-    <span>Login as a guest ?</span>
-  </Link>
+ 
 
 </form>
 

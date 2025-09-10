@@ -24,6 +24,9 @@ const order = require("./routes/OrderRoute");
 const payment = require("./routes/PaymentRoute");
 const cart = require("./routes/WishListRoute");
 const wishlistRoute = require("./routes/WishListRoute");
+const nestAIRoute = require("./routes/NestAIRoute");
+
+app.use("/api/v2", nestAIRoute);
 app.use("/api/v2", wishlistRoute);
 
 app.use("/api/v2",product);

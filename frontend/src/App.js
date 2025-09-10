@@ -48,6 +48,8 @@ import ForgotPassword from "../../frontend/src/component/user/ForgotPassword";
 import ResetPassword from "../../frontend/src/component/user/ResetPassword";
 import Notfound from "../../frontend/src/more/Notfound";
 
+import NestAI from './component/nestai/NestAI'
+
 import AdminLogin from './component/Authentication/AdminLogin ';
 
 function App() {
@@ -125,7 +127,9 @@ function App() {
          <Route exact path="/contact" component={Contact} />
          <Route exact path="/more" component={MoreOption} />
          <Route exact path="/password/forgot" component={ForgotPassword} />
-         <Route exact path="/password/reset/:token" component={ResetPassword} />
+         <Route exact path="/password/reset/:token" component={ResetPassword} />  
+                
+         <ProtectedRoute exact path="/nest-ai" component={NestAI} />
          <ProtectedRoute exact path="/shipping" component={Shipping} />
          <ProtectedRoute exact path="/order/confirm" component={ConfirmOrder} />
          <ProtectedRoute exact path="/me" component={Profile} />

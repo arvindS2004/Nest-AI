@@ -277,14 +277,14 @@ button[type="submit"]:hover {
 }
 
 /* Back Button Styles */
-.back-button-container {
+.back-bc {
   max-width: 1200px;
   margin-top: 35px;
   margin-left: 7vh;
   position: fixed;
 }
 
-.back-button {
+.back-b {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -301,7 +301,7 @@ button[type="submit"]:hover {
   font-size: clamp(0.9rem, 2vw, 1rem);
 }
 
-.back-button:hover {
+.back-b:hover {
   background: #3BB77E;
   color: white;
   transform: translateY(-1px);
@@ -312,11 +312,11 @@ button[type="submit"]:hover {
   transition: transform 0.3s ease;
 }
 
-.back-button:hover .back-arrow-icon {
+.back-b:hover .back-arrow-icon {
   transform: translateX(-2px);
 }
 
-.back-text {
+.back-t {
   font-size: inherit;
 }
 
@@ -347,16 +347,16 @@ button[type="submit"]:hover {
 }
 
 @media screen and (max-width: 768px) {
-  .back-button-container {
+  .back-bc {
     margin: 15px auto;
     padding: 0 15px;
   }
   
-  .back-button {
+  .back-b {
     padding: 5px 14px;
   }
   
-  .back-text {
+  .back-t {
     display: none; /* Hide text on mobile, show only arrow */
   }
   
@@ -409,12 +409,12 @@ button[type="submit"]:hover {
 }
 
 @media screen and (max-width: 640px) {
-  .back-button-container {
+  .back-bc {
     margin: 12px auto;
     padding: 0 12px;
   }
   
-  .back-button {
+  .back-b {
     padding: 8px 12px;
     min-width: 44px;
     min-height: 44px;
@@ -437,7 +437,7 @@ button[type="submit"]:hover {
     width: 100%;
     max-width: 300px;
     margin: 5px 0;
-  }
+  } 
   
   .pointer.flex {
     margin-left: 15px;
@@ -445,12 +445,12 @@ button[type="submit"]:hover {
 }
 
 @media screen and (max-width: 480px) {
-  .back-button-container {
+  .back-bc {
     margin: 10px auto;
     padding: 0 10px;
   }
   
-  .back-button {
+  .back-b {
     padding: 8px 10px;
     border-radius: 6px;
   }

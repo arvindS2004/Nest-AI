@@ -78,8 +78,8 @@ const Footer = () => {
         
        <div className="footer__3rd__part">
             <h5>Service</h5>
-             <Link to="/creator"><h3>Recommendation</h3></Link>
-             <Link to="/Products"><h3>Profile</h3></Link>
+             <Link to="/nest-ai"><h3>Recommendation</h3></Link>
+             <Link to="/Products"><h3>Profile</h3></Link> 
              <Link to="/support"><h3>Report us</h3></Link>
        </div>
        

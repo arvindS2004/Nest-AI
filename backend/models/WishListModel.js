@@ -31,4 +31,14 @@ const wishListSchema = new mongoose.Schema({
   }
 });
 
+wishListSchema.virtual('product', {
+  ref: 'Product',
+  localField: 'productId',
+  foreignField: '_id',
+  justOne: true
+});
+
+wishListSchema.set('toObject', { virtuals: true });
+wishListSchema.set('toJSON', { virtuals: true });
+
 module.exports = mongoose.model("Wishlist", wishListSchema);

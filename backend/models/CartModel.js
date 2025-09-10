@@ -31,4 +31,14 @@ const cartSchema = new mongoose.Schema({
   }
 });
 
+cartSchema.virtual('product', {
+  ref: 'Product',
+  localField: 'productId',
+  foreignField: '_id',
+  justOne: true
+});
+
+cartSchema.set('toObject', { virtuals: true });
+cartSchema.set('toJSON', { virtuals: true });
+
 module.exports = mongoose.model("Cart", cartSchema);

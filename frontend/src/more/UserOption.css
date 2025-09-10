@@ -4,7 +4,7 @@
     border-radius: 100%;
     object-fit: cover;
 }
-.speedDial{
+.speedDial{ 
     position: fixed;
     right: 1vmax;
     top: 13vmax;

@@ -96,7 +96,7 @@ const CreateProduct = ({ history }) => {
         <SideBar />
         <div className="newProductContainer">
           <form
-            className="createProductForm"
+            className="cptf"
             encType="multipart/form-data"
             onSubmit={createProductSubmitHandler}
           >
