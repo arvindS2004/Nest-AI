@@ -1,42 +1,59 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../Footer";
 import Header from "../component/Home/Header";
 import MetaData from "./Metadata";
 import BottomTab from "./BottomTab";
 import "./Contact.css";
+import emailjs from "emailjs-com"; 
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState('');
+  const [submitStatus, setSubmitStatus] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value
     }));
   };
 
+  useEffect(() => {
+    if (submitStatus) {
+      const timer = setTimeout(() => {
+        setSubmitStatus("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitStatus]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitStatus('');
+    setSubmitStatus("");
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      const result = await emailjs.send(
+        "service_ehilqcf",   
+        "template_dctnf4o", 
+        formData,            
+        "vNzLi1hlDIGzgIAKQ"    
+      );
+
+      console.log(result.text);
+      setSubmitStatus("success");
+      setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
-      setSubmitStatus('error');
+      console.error("EmailJS Error:", error);
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
@@ -58,14 +75,7 @@ const Contact = () => {
               <h2>Contact Information</h2>
               
               <div className="info-item">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="info-icon"
-                  viewBox="0 0 16 16"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="info-icon" viewBox="0 0 16 16">
                   <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"></path>
                 </svg>
                 <div className="info-text">
@@ -75,14 +85,7 @@ const Contact = () => {
               </div>
 
               <div className="info-item">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="info-icon"
-                  viewBox="0 0 16 16"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="info-icon" viewBox="0 0 16 16">
                   <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"></path>
                   <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
                 </svg>
@@ -93,14 +96,7 @@ const Contact = () => {
               </div>
 
               <div className="info-item">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="info-icon"
-                  viewBox="0 0 16 16"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="info-icon" viewBox="0 0 16 16">
                   <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122L9.98 10.494c-.156.055-.308.134-.43.256L8.5 11.8c-.823-.546-1.49-1.213-2.036-2.036l1.05-1.05c.122-.122.201-.274.256-.43l.433-1.805a.678.678 0 0 0-.122-.58L6.287 3.593a.678.678 0 0 0-.63-.195L4.03 3.59c-.156.055-.308.134-.43.256L3.654 1.328z"/>
                 </svg>
                 <div className="info-text">
@@ -109,6 +105,7 @@ const Contact = () => {
                 </div>
               </div>
 
+              {/* Social Icons */}
               <div className="bicfs">
                 <h3>Follow Us</h3>
                 <div className="social-icons">
@@ -135,6 +132,7 @@ const Contact = () => {
                 </div>
               </div>
             </div>
+
 
             <div className="contact-form-container">
               <form className="contact-form" onSubmit={handleSubmit}>
@@ -190,23 +188,23 @@ const Contact = () => {
                   ></textarea>
                 </div>
 
-                <button 
-                  type="submit" 
-                  className={`submit-btn ${isSubmitting ? 'submitting' : ''}`}
+                <button
+                  type="submit"
+                  className={`submit-btn ${isSubmitting ? "submitting" : ""}`}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
 
-                {submitStatus === 'success' && (
+                {submitStatus === "success" && (
                   <div className="status-message success">
-                    Thank you! Your message has been sent successfully.
+                    ✅ Thank you! Your message has been sent successfully.
                   </div>
                 )}
 
-                {submitStatus === 'error' && (
+                {submitStatus === "error" && (
                   <div className="status-message error">
-                    Sorry, there was an error sending your message. Please try again.
+                    ❌ Sorry, there was an error sending your message. Please try again.
                   </div>
                 )}
               </form>

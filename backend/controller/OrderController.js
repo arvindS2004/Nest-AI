@@ -91,10 +91,11 @@ exports.updateAdminOrder = catchAsyncErrors(async (req, res, next) => {
     }
   
     if (req.body.status === "Shipped") {
-      order.orderItems.forEach(async (o) => {
-        await updateStock(o.product, o.quantity);
-      });
-    }
+  for (const o of order.orderItems) {
+    await updateStock(o.productId, o.quantity);
+  }
+}
+
     order.orderStatus = req.body.status;
   
     if (req.body.status === "Delivered") {
@@ -108,13 +109,17 @@ exports.updateAdminOrder = catchAsyncErrors(async (req, res, next) => {
   });
   
   async function updateStock(id, quantity) {
-      
-    const product = await Product.findById(id);
-  
-    product.Stock -= quantity;
-  
-    await product.save({ validateBeforeSave: false });
+  const product = await Product.findById(id);
+
+  if (!product) {
+    console.error(`⚠️ Product not found for ID: ${id}`);
+    return; // skip instead of crashing the server
   }
+
+  product.Stock = product.Stock - quantity;
+  await product.save({ validateBeforeSave: false });
+}
+
 
 
 // delete Order ---Admin

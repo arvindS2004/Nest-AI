@@ -57,14 +57,7 @@ const MyOrderDetails = ({ match }) => {
               <Typography>Payment</Typography>
               <div className="orderDetailsContainerBox">
                 <div>
-                  <p
-                    className={
-                      order.orderStatus === "Delivered"
-                        ? "greenColor"
-                        : "redColor"
-                    }
-                  >                  
-                  </p>
+               
                   <p style={{
                       color:"green"
                   }}>
@@ -74,7 +67,7 @@ const MyOrderDetails = ({ match }) => {
 
                 <div>
                   <p>Amount:</p>
-                  <span>$ {order.totalPrice && order.totalPrice}</span>
+                  <span>₹ {order.totalPrice && order.totalPrice}</span>
                 </div>
               </div>
 
@@ -99,18 +92,19 @@ const MyOrderDetails = ({ match }) => {
               <div className="orderDetailsCartItemsContainer">
 
                 {order.orderItems &&
-                  order.orderItems.map((item) => (
-                    <div key={item.Offer}>
-                      <img src={item.image} alt="Product" />
-                      <Link to={`/product/${item.Offer}`}>
-                        {item.name}
-                      </Link>{" "}
-                      <span>
-                        {item.quantity} X ${item.price} ={" "}
-                        <b>${item.price * item.quantity}</b>
-                      </span>
-                    </div>
-                  ))}
+  order.orderItems.map((item, idx) => (
+    <div key={idx} className="order-item-row">
+      <img src={item.productImage || item.image} alt={item.productName || item.name} />
+      <Link to={`/product/${item.productId || item.product}`}> {/* productId is the ObjectId */}
+        {item.productName || item.name}
+      </Link>{" "}
+      <span>
+        {item.quantity} X ₹{item.productPrice || item.price} ={" "}
+        <b>₹{(item.productPrice || item.price) * item.quantity}</b>
+      </span>
+    </div>
+  ))}
+
 
 
               </div>

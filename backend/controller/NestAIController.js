@@ -5,21 +5,21 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorhandler");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Initialize Gemini AI
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Get AI-powered personalized recommendations
+
 exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    // Get user's cart items
+    
     const cartItems = await Cart.find({ userId }).populate('productId');
     
-    // Get user's wishlist items  
+    
     const wishlistItems = await Wishlist.find({ userId }).populate('productId');
 
-    // If no cart or wishlist items, return popular products
+    
     if (cartItems.length === 0 && wishlistItems.length === 0) {
       const popularProducts = await Product.find()
         .sort({ ratings: -1, numOfReviews: -1 })
@@ -40,7 +40,7 @@ exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next)
       });
     }
 
-    // Prepare data for AI analysis
+    
     const userPreferences = {
       cartItems: cartItems.map(item => ({
         name: item.productName,
@@ -55,7 +55,7 @@ exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next)
       }))
     };
 
-    // Get all available products (excluding already in cart/wishlist)
+    
     const existingProductIds = [
       ...cartItems.map(item => item.productId),
       ...wishlistItems.map(item => item.productId)
@@ -66,7 +66,7 @@ exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next)
       Stock: { $gt: 0 }
     }).limit(20).select('name description category price offerPrice images Stock ratings');
 
-    // Generate AI recommendations
+    
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
     
     const prompt = `

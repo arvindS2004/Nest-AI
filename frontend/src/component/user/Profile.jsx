@@ -58,26 +58,25 @@ useEffect(() => {
                         <h3 id="nav-menu-title">Account</h3>
                         <nav id="profile-navigation">
                             <Link to="/orders" id="nav-orders" className="nav-item">
-  <span id="orders-nav-icon"></span>
-  <span id="orders-nav-text">My Orders</span>
-  <span id="orders-nav-badge">{orders ? orders.length : 0}</span>
+  
+  <div id="orders-nav-text">My Orders</div>
+  <div id="orders-nav-badge">{orders ? orders.length : 0}</div>
 </Link>
 
                             
                             
                             <Link to="/favourites" id="nav-wishlist" className="nav-item">
-                                <span id="wishlist-nav-icon"></span>
-                                <span id="wishlist-nav-text">Wishlist</span>
+                              
+                                <div id="wishlist-nav-text">Wishlist</div>
                             </Link>
                             
                             <Link to="/me/update" id="nav-security" className="nav-item">
-                                <span id="security-nav-icon"></span>
-                                <span id="security-nav-text">Change Password</span>
+                               
+                                <div id="security-nav-text">Change Password</div>
                             </Link>
                             
-                            <Link to="/faq" id="nav-settings" className="nav-item">
-                                <span id="settings-nav-icon"></span>
-                                <span id="settings-nav-text">Nest-AI Recommendations</span>
+                            <Link to="/nest-ai" id="nav-settings" className="nav-item">
+                              <div id="settings-nav-text">Nest-AI Recommendations</div>
                             </Link>
                         </nav>
                     </div>
@@ -109,7 +108,7 @@ useEffect(() => {
                         <div id="details-grid">
                             <div id="detail-item-name" className="detail-item">
                                 <div id="detail-name-label" className="detail-label">
-                                    <span id="detail-name-icon"></span>
+                                    
                                     Full Name
                                 </div>
                                 <div id="detail-name-value" className="detail-value">
@@ -119,7 +118,7 @@ useEffect(() => {
                             
                             <div id="detail-item-email" className="detail-item">
                                 <div id="detail-email-label" className="detail-label">
-                                    <span id="detail-email-icon"></span>
+                                   
                                     Email Address
                                 </div>
                                 <div id="detail-email-value" className="detail-value">
@@ -129,7 +128,7 @@ useEffect(() => {
                             
                             <div id="detail-item-joined" className="detail-item">
                                 <div id="detail-joined-label" className="detail-label">
-                                    <span id="detail-joined-icon"></span>
+                                    
                                     Member Since
                                 </div>
                                 <div id="detail-joined-value" className="detail-value">
@@ -143,7 +142,7 @@ useEffect(() => {
                             
                             <div id="detail-item-status" className="detail-item">
                                 <div id="detail-status-label" className="detail-label">
-                                    <span id="detail-status-icon"></span>
+                                    
                                     Account Status
                                 </div>
                                 <div id="detail-status-value" className="detail-value">

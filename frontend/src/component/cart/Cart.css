@@ -519,36 +519,16 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.continue-shopping-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background: transparent;
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-medium);
-  text-decoration: none;
-  font-weight: 500;
-  transition: var(--transition-medium);
-}
 
-.continue-shopping-btn:hover {
-  background: var(--primary-color);
-  color: white;
-  transform: translateY(-1px);
-  text-decoration: none;
-}
 
-/* ====== TOAST CUSTOMIZATION ====== */
+
+
+
 .custom-toast-container {
   bottom: 100px !important;
 }
 
-/* ====== RESPONSIVE DESIGN ====== */
 
-/* Large Tablets */
 @media screen and (max-width: 1024px) {
   .cart-content {
     padding: 1.5rem 1rem;

@@ -9,6 +9,7 @@ import MetaData from "../../more/Metadata";
 import Footer from "../../Footer";
 import BottomTab from "../../more/BottomTab";
 import Loading from "../../more/Loader";
+import Testim from "./Testim.jsx";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -107,6 +108,10 @@ const Home = () => {
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
+
+       
+       <hr />
+
        <h2 className="homeHeading">AI Recommendations</h2>
 <center>  <div>
   <Link to="/nest-ai">
@@ -130,6 +135,7 @@ const Home = () => {
   </Link>
 </div></center>
 
+<Testim />
 
       <ToastContainer 
         position="bottom-center"

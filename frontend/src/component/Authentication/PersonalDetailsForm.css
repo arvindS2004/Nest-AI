@@ -1,0 +1,413 @@
+
+#personal-details-main-container.personalDetailsContainer {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f6f4f4 0%, #34d399 50%, #f6f5f5 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Form Wrapper */
+#personal-details-form-wrapper.formWrapper {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(16, 185, 129, 0.15);
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header Section */
+#personal-details-header.headerSection {
+  background: linear-gradient(135deg, #010111 0%, #011c13 50%, #1e1501 100%);
+  padding: 40px 30px;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+#personal-details-header.headerSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(251,191,36,0.2)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
+}
+
+#personal-details-title {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#personal-details-subtitle {
+  font-size: 16px;
+  opacity: 0.95;
+  margin: 0;
+  font-weight: 300;
+  position: relative;
+  z-index: 1;
+  color: white;
+}
+
+/* Legacy h2 support */
+.personalDetailsContainer h2 {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.5px;
+  color: white;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styles */
+#personal-details-form.personalDetailsForm {
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: none;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Input Groups */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputGroup label {
+  font-weight: 600;
+  color: #065f46;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.inputRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.halfWidth {
+  flex: 1;
+}
+
+/* Enhanced Input Styles */
+.personalDetailsForm input,
+.personalDetailsForm textarea,
+.inputField,
+.textareaField {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #d1fae5;
+  border-radius: 16px;
+  font-size: 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0fdf4;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  color: #064e3b;
+}
+
+.personalDetailsForm input:focus,
+.personalDetailsForm textarea:focus,
+.inputField:focus,
+.textareaField:focus {
+  outline: none;
+  border-color: #10b981;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15), 0 0 20px rgba(251, 191, 36, 0.1);
+  transform: translateY(-2px);
+}
+
+.personalDetailsForm input:hover:not(:focus),
+.personalDetailsForm textarea:hover:not(:focus),
+.inputField:hover:not(:focus),
+.textareaField:hover:not(:focus) {
+  border-color: #34d399;
+  background: white;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+}
+
+.textareaField {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.personalDetailsForm input::placeholder,
+.personalDetailsForm textarea::placeholder,
+.inputField::placeholder,
+.textareaField::placeholder {
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Enhanced Submit Button */
+.pdbt,
+#personal-details-submit-btn.submitButton {
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #fbbf24 100%);
+  color: white;
+  border: none;
+  padding: 18px 32px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 16px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.pdbt::before,
+#personal-details-submit-btn.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.pdbt:hover::before,
+#personal-details-submit-btn.submitButton:hover::before {
+  left: 100%;
+}
+
+.pdbt:hover,
+#personal-details-submit-btn.submitButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4), 0 5px 15px rgba(251, 191, 36, 0.2);
+  background: linear-gradient(135deg, #047857 0%, #059669 50%, #f59e0b 100%);
+}
+
+.pdbt:active,
+#personal-details-submit-btn.submitButton:active {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+#submit-btn-icon {
+  transition: transform 0.3s ease;
+}
+
+#personal-details-submit-btn.submitButton:hover #submit-btn-icon {
+  transform: translateX(4px);
+}
+
+/* Toast Container */
+#personal-details-toast-container {
+  font-family: inherit;
+}
+
+/* Success States */
+.success-highlight {
+  border-color: #10b981 !important;
+  background: #ecfdf5 !important;
+}
+
+/* Warning States */
+.warning-highlight {
+  border-color: #fbbf24 !important;
+  background: #fffbeb !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #personal-details-main-container.personalDetailsContainer {
+    padding: 10px;
+  }
+  
+  #personal-details-form-wrapper.formWrapper {
+    margin: 0;
+    border-radius: 20px;
+    max-width: none;
+  }
+  
+  #personal-details-header.headerSection {
+    padding: 30px 20px;
+  }
+  
+  #personal-details-form.personalDetailsForm {
+    padding: 30px 20px;
+    gap: 20px;
+  }
+  
+  .inputRow {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  #personal-details-title {
+    font-size: 24px;
+  }
+  
+  #personal-details-subtitle {
+    font-size: 14px;
+  }
+  
+  .personalDetailsContainer h2 {
+    font-size: 24px;
+  }
+  
+  .personalDetailsForm input,
+  .personalDetailsForm textarea,
+  .inputField,
+  .textareaField {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  #personal-details-main-container.personalDetailsContainer {
+    padding: 5px;
+  }
+  
+  #personal-details-form-wrapper.formWrapper {
+    border-radius: 16px;
+  }
+  
+  #personal-details-header.headerSection {
+    padding: 25px 15px;
+  }
+  
+  #personal-details-form.personalDetailsForm {
+    padding: 25px 15px;
+    gap: 18px;
+  }
+  
+  .personalDetailsForm input,
+  .personalDetailsForm textarea,
+  .inputField,
+  .textareaField {
+    padding: 12px 14px;
+  }
+  
+  .pdbt,
+  #personal-details-submit-btn.submitButton {
+    padding: 16px 28px;
+    font-size: 15px;
+  }
+}
+
+/* Accessibility Features */
+@media (prefers-contrast: high) {
+  #personal-details-form-wrapper.formWrapper {
+    background: white;
+    border: 3px solid #065f46;
+  }
+  
+  .personalDetailsForm input,
+  .personalDetailsForm textarea,
+  .inputField,
+  .textareaField {
+    border-color: #065f46;
+    background: white;
+    color: #000;
+  }
+  
+  .pdbt,
+  #personal-details-submit-btn.submitButton {
+    background: #065f46;
+    border: 2px solid #065f46;
+    color: white;
+  }
+  
+  .inputGroup label {
+    color: #000;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  #personal-details-form-wrapper.formWrapper {
+    animation: none;
+  }
+}
+
+
+
+/* Custom Focus Ring for Better Accessibility */
+.personalDetailsForm input:focus-visible,
+.personalDetailsForm textarea:focus-visible,
+.inputField:focus-visible,
+.textareaField:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+.pdbt:focus-visible,
+#personal-details-submit-btn.submitButton:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+/* Smooth Loading Animation */
+.form-loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.form-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}

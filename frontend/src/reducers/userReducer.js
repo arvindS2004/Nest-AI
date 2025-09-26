@@ -50,8 +50,25 @@ export const userReducer = (state = { user: {} }, action) => {
         loading: true,
         isAuthenticated: false,
       };
+
     case LOGIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload,
+        newUser: false, // existing user logging in
+      };
+
     case REGISTER_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload,
+        newUser: true, // mark newly registered user
+      };
+
     case LOAD_USER_SUCCESS:
       return {
         ...state,
@@ -65,7 +82,9 @@ export const userReducer = (state = { user: {} }, action) => {
         loading: false,
         user: null,
         isAuthenticated: false,
+        newUser: false,
       };
+
     case LOGIN_FAIL:
     case REGISTER_USER_FAIL:
       return {
@@ -74,6 +93,7 @@ export const userReducer = (state = { user: {} }, action) => {
         isAuthenticated: false,
         user: null,
         error: action.payload,
+        newUser: false,
       };
 
     case LOAD_USER_FAIL:
@@ -82,6 +102,7 @@ export const userReducer = (state = { user: {} }, action) => {
         isAuthenticated: false,
         user: null,
         error: action.payload,
+        newUser: false,
       };
 
     case LOGOUT_FAIL:
@@ -95,6 +116,12 @@ export const userReducer = (state = { user: {} }, action) => {
       return {
         ...state,
         error: null,
+      };
+
+    case "CLEAR_NEW_USER":
+      return {
+        ...state,
+        newUser: false,
       };
 
     default:

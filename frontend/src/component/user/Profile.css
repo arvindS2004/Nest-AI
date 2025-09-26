@@ -181,6 +181,7 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    font-weight: 600;
 }
 
 .nav-item::before {

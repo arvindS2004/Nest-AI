@@ -24,7 +24,7 @@ const categories = [
 
 const Products = ({ match }) => {
   const dispatch = useDispatch();
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [category, setCategory] = useState("");
 
@@ -42,13 +42,18 @@ const Products = ({ match }) => {
     setCurrentPage(e);
   };
 
+  // Reset to page 1 when category changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [category]);
+
   useEffect(() => {
     if (error) {
       alert(error);
       dispatch(clearErrors());
     }
     dispatch(getProduct(keyword, currentPage, category));
-  }, [dispatch, keyword, currentPage, category, alert, error]);
+  }, [dispatch, keyword, currentPage, category, error]);
 
   return (
     <>
@@ -69,38 +74,43 @@ const Products = ({ match }) => {
                 <div className="products-divider"></div>
               </div>
             )}
-            
-  <div className="category-dropdown">
-    <select
-      value={category}
-      onChange={(e) => setCategory(e.target.value)}
-    >
-      <option value="">All Categories</option>
-      {categories.map((cat) => (
-        <option key={cat} value={cat}>
-          {cat}
-        </option>
-      ))}
-    </select>
-  </div>                        
-            
 
-              <div className="products-content">
-                {products.length === 0 ? (
-                  <div className="no-products">
-                    <div className="no-products-icon">🛍️</div>
-                    <h3>No Products Found</h3>
-                    <p>Try adjusting your search criteria or browse different categories</p>
-                  </div>
-                ) : (
-                  <div className="products-grid">
-                    {products &&
-                      products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
-                      ))}
-                  </div> 
-                )}
-              </div>
+            <div className="category-dropdown">
+              <select
+                value={category}
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                  setCurrentPage(1); // also reset here for safety
+                }}
+              >
+                <option value="">All Categories</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="products-content">
+              {products.length === 0 ? (
+                <div className="no-products">
+                  <div className="no-products-icon">🛍️</div>
+                  <h3>No Products Found</h3>
+                  <p>
+                    Try adjusting your search criteria or browse different
+                    categories
+                  </p>
+                </div>
+              ) : (
+                <div className="products-grid">
+                  {products &&
+                    products.map((product) => (
+                      <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>
+              )}
+            </div>
 
             {products.length > 0 && (
               <div className="pagination-container">

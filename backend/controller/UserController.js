@@ -55,8 +55,8 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
       avatar: avatarData,
     });
     
-    sendToken(user, 201, res, user.role); 
-    
+    // Send token with newUser flag for registration
+    sendTokenWithNewUserFlag(user, 201, res, true); 
 
   } catch (error) {
     res.status(500).json({
@@ -86,8 +86,8 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Incorrect password", 401));
   }
 
-  // Send token along with role
-  sendToken(user, 200, res);
+  // Send token with newUser flag false for login (existing user)
+  sendTokenWithNewUserFlag(user, 200, res, false);
 });
 
 //  Log out user
@@ -334,3 +334,23 @@ exports.deleteUser = catchAsyncErrors(async(req, res, next) => {
     message: "User deleted successfully"
   });
 });
+
+// Helper function to send token with newUser flag
+const sendTokenWithNewUserFlag = (user, statusCode, res, isNewUser) => {
+  const token = user.getJwtToken();
+
+  // Options for cookie
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+
+  res.status(statusCode).cookie("token", token, options).json({
+    success: true,
+    user,
+    token,
+    newUser: isNewUser, // This is the key addition
+  });
+};

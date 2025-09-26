@@ -25,7 +25,7 @@ const defaultAvatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
 const LoginSignup = ({ history, location }) => { 
   const dispatch = useDispatch();
 
-  const { error, loading, isAuthenticated } = useSelector(
+  const { error, loading, isAuthenticated, newUser } = useSelector(
     (state) => state.user
   );
 
@@ -72,11 +72,9 @@ const LoginSignup = ({ history, location }) => {
     myForm.set("password", password);
     
     if (isDefaultAvatar) {
-      
       myForm.set("avatarUrl", avatar);
       myForm.set("isDefaultAvatar", "true");
     } else {
-      
       myForm.set("avatar", avatar);
       myForm.set("isDefaultAvatar", "false");
     }
@@ -102,8 +100,6 @@ const LoginSignup = ({ history, location }) => {
     }
   };
 
-  
-
   const selectDefaultAvatar = (avatarUrl) => {
     setAvatarPreview(avatarUrl);
     setAvatar(avatarUrl);
@@ -120,10 +116,17 @@ const LoginSignup = ({ history, location }) => {
     }
 
     if (isAuthenticated) {
-      history.push(redirect);
+      // Check if user is new and hasn't completed personal details
+      if (newUser === true) {
+        console.log("New user detected, redirecting to personal details form");
+        history.push("/personal-details");
+      } else {
+        console.log("Existing user, redirecting to:", redirect);
+        history.push(redirect);
+      }
     }
-  }, [dispatch, error, history, isAuthenticated, redirect]);
-
+  }, [dispatch, error, history, isAuthenticated, redirect, newUser]);
+ 
   const switchTabs = (e, tab) => {
     if (tab === "login") {
       switcherTab.current.classList.add("shiftToNeutral");
@@ -140,8 +143,6 @@ const LoginSignup = ({ history, location }) => {
       loginTab.current.classList.add("shiftToLeft");
     }
   };
-
-  
 
   return (
     <>
@@ -189,10 +190,7 @@ const LoginSignup = ({ history, location }) => {
   </div>
   <Link to="/password/forgot">Forgot Password ?</Link>
   <input type="submit" value="Login" className="loginBtn" />
- 
-
 </form>
-
 
               <form
                 className="signUpForm"
