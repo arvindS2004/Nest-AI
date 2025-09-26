@@ -2,7 +2,7 @@ const Cart = require("../models/CartModel");
 const Wishlist = require("../models/WishListModel");
 const Product = require("../models/ProductModel");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const ErrorHandler = require("../utils/errorhandler");
+const ErrorHandler = require("../utils/ErrorHandler");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 
