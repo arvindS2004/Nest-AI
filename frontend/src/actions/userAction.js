@@ -221,7 +221,6 @@ export const getUserDetails = (id) => async (dispatch) => {
   }
 };
 
-// Update user ----- Admin
 export function updateUser(id, userData) {
   return async (dispatch) => {
     try {

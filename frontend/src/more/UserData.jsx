@@ -69,14 +69,14 @@ const UserData = ({ user }) => {
     { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser },
   ];
 
-  if (user && user.role === "admin") {
+  if (user.role === "admin") {
     options.unshift({
       icon: <DashboardIcon />,
       name: "Dashboard",
       func: dashboard,
     });
   }
-  if (user && user.role === "Creator") {
+  if (user.role === "Creator") {
     options.unshift({
       icon: <DashboardIcon />,
       name: "Dashboard",
@@ -127,7 +127,7 @@ const UserData = ({ user }) => {
         icon={
           <img
             className="speedDialIcon"
-            src={user && user.avatar && user.avatar.url ? user.avatar.url : "/profile.png"}
+            src={user.avatar.url ? user.avatar.url : ("/profile.png")}
             alt="Profile"
             style={{
               position:"fixed"
