@@ -1,7 +1,7 @@
 {
-  "name": "ecommerce",
+  "name": "ecommerce-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "MERN Ecommerce Store Backend",
   "main": "backend/server.js",
   "engines": {
     "node": "18.x"
@@ -9,8 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js",
-    "build": "npm install --prefix frontend && npm run build --prefix frontend"
+    "dev": "nodemon backend/server.js"
   },
   "author": "Arvind Shukla",
   "license": "ISC",
@@ -22,6 +21,7 @@
     "body-parser": "^1.19.1",
     "cloudinary": "^1.29.0",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "express-fileupload": "^1.3.1",
@@ -29,7 +29,6 @@
     "mongoose": "^6.12.3",
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.15",
-    "stripe": "^8.215.0",
     "validator": "^13.7.0"
   }
 }
