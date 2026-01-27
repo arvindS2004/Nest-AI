@@ -1,5 +1,5 @@
 import { React, useEffect, useRef, useState} from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
@@ -22,9 +22,10 @@ import avatar6 from "./avatars/avatar6.png";
 
 const defaultAvatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
 
-const LoginSignup = ({ history, location }) => { 
+const LoginSignup = () => { 
   const dispatch = useDispatch();
-
+const history = useHistory();
+  const location = useLocation();
   const { error, loading, isAuthenticated, newUser } = useSelector(
     (state) => state.user
   );
@@ -115,7 +116,7 @@ const LoginSignup = ({ history, location }) => {
       dispatch(clearErrors());
     }
 
-    if (isAuthenticated) {
+    if (isAuthenticated && !loading) {
       // Check if user is new and hasn't completed personal details
       if (newUser === true) {
         console.log("New user detected, redirecting to personal details form");
@@ -125,7 +126,7 @@ const LoginSignup = ({ history, location }) => {
         history.push(redirect);
       }
     }
-  }, [dispatch, error, history, isAuthenticated, redirect, newUser]);
+  }, [dispatch, error, history, isAuthenticated, redirect, newUser, location.search]);
  
   const switchTabs = (e, tab) => {
     if (tab === "login") {

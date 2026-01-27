@@ -5,7 +5,7 @@ import Header from "../component/Home/Header";
 import MetaData from "./Metadata";
 import BottomTab from "./BottomTab";
 import "./Contact.css";
-import emailjs from '@emailjs/browser';
+import emailjs from "emailjs-com"; 
 
 const Contact = () => {
   const [formData, setFormData] = useState({

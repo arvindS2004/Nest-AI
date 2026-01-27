@@ -1,12 +1,18 @@
+
 const Cart = require("../models/CartModel");
 const Wishlist = require("../models/WishListModel");
 const Product = require("../models/ProductModel");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenAI } = require("@google/genai");
+
+const genAI = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY
+});
 
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+console.log("GEMINI KEY FROM ENV:", process.env.GEMINI_API_KEY);
 
 
 exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next) => {
@@ -65,9 +71,6 @@ exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next)
       _id: { $nin: existingProductIds },
       Stock: { $gt: 0 }
     }).limit(20).select('name description category price offerPrice images Stock ratings');
-
-    
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
     
     const prompt = `
     You are a helpful grocery recommendation AI assistant. Based on the user's shopping preferences, recommend products and provide health/lifestyle benefits.
@@ -109,10 +112,22 @@ exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next)
     - Seasonal or trending items in their preferred categories
     `;
 
-    const result = await model.generateContent(prompt);
-    const aiResponse = result.response.text();
-    
-    // Parse AI response
+    const result = await genAI.models.generateContent({
+  model: "models/gemini-2.5-flash",
+  contents: prompt,
+  
+});
+
+const aiResponse =
+  result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+if (!aiResponse) {
+  console.error("Gemini raw response:", JSON.stringify(result, null, 2));
+  throw new Error("Empty response from Gemini");
+}
+
+
+
     let aiRecommendations;
     try {
       const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
@@ -174,7 +189,6 @@ exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next)
   }
 });
 
-// Fallback function for category-based recommendations
 function getCategoryBasedRecommendations(userPreferences, availableProducts, res) {
   const userCategories = [
     ...userPreferences.cartItems.map(item => item.category),

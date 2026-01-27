@@ -1,3 +1,9 @@
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({
+    path: "backend/config/.env"
+  });
+}
+
 const app = require("./app");
 const connectDatabase = require("./db/Database.js");
 const cloudinary = require("cloudinary");
@@ -10,11 +16,7 @@ process.on("uncaughtException", (err) => {
 });
 
 // Load .env locally
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config({
-    path: "backend/config/.env"
-  });
-}
+
 
 // Connect DB
 connectDatabase();
@@ -31,6 +33,8 @@ const PORT = process.env.PORT || 4000;
 const server = app.listen(PORT, () => {
   console.log(`Server is working on port: ${PORT}`);
 });
+
+console.log("Mongo URI:", process.env.MONGO_URI);
 
 // Unhandled promise rejections
 process.on("unhandledRejection", (err) => {

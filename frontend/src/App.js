@@ -54,6 +54,10 @@ import AdminLogin from './component/Authentication/AdminLogin ';
 
 import PersonalDetailsForm from './component/Authentication/PersonalDetailsForm';
 
+
+axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.withCredentials = true;
+
 function App() {
   const dispatch = useDispatch();
   const {isAuthenticated, user, loading} = useSelector((state) => state.user);
@@ -69,7 +73,6 @@ function App() {
     }
   }
 
-  // Load user on app start
   useEffect(() => {
     WebFont.load({
       google: {

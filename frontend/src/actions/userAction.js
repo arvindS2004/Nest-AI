@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   ALL_USERS_FAIL,
   ALL_USERS_REQUEST,
@@ -37,6 +38,8 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
 } from "../constans/userContans";
+
+axios.defaults.withCredentials = true;
 
 // Login
 export const login = (email, password) => async (dispatch) => {
