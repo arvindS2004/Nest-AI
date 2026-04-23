@@ -10,10 +10,25 @@ const genAI = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
 });
 
-
-
 console.log("GEMINI KEY FROM ENV:", process.env.GEMINI_API_KEY);
 
+
+async function callGeminiWithRetry(prompt, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const result = await callGeminiWithRetry(prompt);
+
+      return result;
+    } catch (err) {
+      if (err.status === 503 && i < retries - 1) {
+        console.log("Retrying Gemini API...");
+        await new Promise(res => setTimeout(res, 2000)); // wait 2 sec
+      } else {
+        throw err;
+      }
+    }
+  }
+}
 
 exports.getPersonalizedRecommendations = catchAsyncErrors(async (req, res, next) => {
   try {
